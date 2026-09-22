@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - network.host=0.0.0.0
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+
+    volumes:
+      - /opt/elk/elasticsearch:/usr/share/elasticsearch/data
+
+    networks:
+      - elk_net
+
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+
+    deploy:
+      placement:
+        constraints:
+          - node.labels.role == worker3
+
+      restart_policy:
+        condition: on-failure
+
+networks:
+  elk_net:
+    external: true

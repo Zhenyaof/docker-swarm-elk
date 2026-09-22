@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.15.3
+
+    volumes:
+      - /opt/elk/logstash:/usr/share/logstash/data
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+
+    networks:
+      - elk_net
+
+    deploy:
+      mode: global
+
+      restart_policy:
+        condition: any
+
+networks:
+  elk_net:
+    external: true
