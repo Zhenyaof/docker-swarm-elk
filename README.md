@@ -8,17 +8,17 @@ A three-node Docker Swarm deployment running Elasticsearch, Kibana, and Logstash
 |---|---|---|---|
 | Manager | 192.168.198.140 | Manager | Logstash |
 | Worker1 | 192.168.198.139 | Worker | Kibana + Logstash |
-| Worker2 | 192.168.198.138 | Worker | Elasticsearch + Logstash |
-| Worker3 | 192.168.198.144 | Worker | Replacement Worker |
+| Worker3 | 192.168.198.144 | Worker | Elasticsearch + Logstash |
+
+Worker2 (192.168.198.138) was initially used for Elasticsearch and was later drained and removed from the Swarm. Elasticsearch was migrated to Worker3 before Worker2 was removed.
 
 ### Final ELK placement
 
-- Elasticsearch: Worker2 initially, later migrated to Worker3
+- Elasticsearch: Worker3
 - Kibana: Worker1
-- Logstash: Manager + all workers
-- Worker3: added as the replacement worker for Worker2
+- Logstash: Manager + Worker1 + Worker3
+- Worker3: replacement for Worker2
 - `elk_net`: dedicated overlay network
-
 ## Technologies
 
 - Docker Engine
